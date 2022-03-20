@@ -22,7 +22,8 @@
         <x-jet-banner />
 
         <div class="min-h-screen bg-gray-100">
-            @livewire('navigation-menu')
+        @livewire('navigation-menu')
+        <livewire:navigation-menu /> 
 
             <!-- Page Heading -->
             @if (isset($header))
@@ -35,11 +36,36 @@
 
             <!-- Page Content -->
             <main>
-                {{ $slot }}
+            {{ $slot }}
+
+<livewire:crud /> 
+
             </main>
         </div>
 
         @stack('modals')
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script>
+const Toast = Swal.mixin({
+toast: true,
+position: 'top',
+showConfirmButton: false,
+showCloseButton: true,
+timer: 5000,
+timerProgressBar:true,
+didOpen: (toast) => {
+toast.addEventListener('mouseenter', Swal.stopTimer)
+toast.addEventListener('mouseleave', Swal.resumeTimer)
+}
+});
+
+window.addEventListener('alert',({detail:{type,message}})=>{
+Toast.fire({
+icon:type,
+title:message
+})
+})
+</script>
 
         @livewireScripts
     </body>

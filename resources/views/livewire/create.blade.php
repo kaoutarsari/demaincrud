@@ -13,7 +13,8 @@
                                    class="block text-gray-700 text-sm font-bold mb-2">Name</label>
                             <input type="text"
                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                   id="exampleFormControlInput1" placeholder="Enter Name" wire:model="name">
+                                   id="exampleFormControlInput1" placeholder="Enter Name" wire:model="name"
+                                  {{ !$edit ? 'disabled' : '' }} >
                             @error('name') <span class="text-red-500">{{ $message }}</span>@enderror
                         </div>
                         <div class="mb-4">
@@ -22,7 +23,7 @@
                             <textarea
                                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                 id="exampleFormControlInput2" wire:model="email"
-                                placeholder="Enter Email"></textarea>
+                                placeholder="Enter Email" {{ !$edit ? 'disabled' : ''  }} ></textarea>
                             @error('email') <span class="text-red-500">{{ $message }}</span>@enderror
                         </div>
                         <div class="mb-4">
@@ -31,29 +32,41 @@
                             <textarea
                                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                 id="exampleFormControlInput2" wire:model="mobile"
-                                placeholder="Enter Mobile"></textarea>
+                                placeholder="Enter Mobile" {{ !$edit ? 'disabled' : '' }}></textarea>
                             @error('mobile') <span class="text-red-500">{{ $message }}</span>@enderror
                         </div>
+                   
+                        {{-- $editContact ? '' : 'disabled=true' --}}
+
+                        <div class="mb-4">
+                        <label for="satut">Choose a satut:</label>
+                          <select wire:model="satut" {{ !$edit ? 'disabled' : '' }} >
+                             <option value = "0">false</option>
+                             <option value= "1">true</option>
+                         </select>
+                         </div>
+
+
                     </div>
                 </div>
                 <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                     <span class="flex w-full rounded-md shadow-sm sm:ml-3 sm:w-auto">
 
 
-                            <button type="submit" wire:click.prevent="store" class="btn btn-primary">Enregistrer</button>
 
 
 
                     </span>
+                    @if($show)
                     <span class="mt-3 flex w-full rounded-md shadow-sm sm:mt-0 sm:w-auto">
-                       @if($isModalOpen=='create')
+                    <button type="submit" wire:click.prevent="store" class="btn btn-primary">Enregistrer</button>
+
                         <button wire:click="closeModalPopover()" type="button"
                                 class="inline-flex justify-center w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-base leading-6 font-bold text-gray-700 shadow-sm hover:text-gray-700 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue transition ease-in-out duration-150 sm:text-sm sm:leading-5">
                             Close
                         </button>
-                           @endif
-
                     </span>
+                      @endif
                 </div>
             </form>
         </div>

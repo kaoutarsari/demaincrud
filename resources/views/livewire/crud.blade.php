@@ -43,11 +43,17 @@
                         <td class="border px-4 py-2">{{ $student->name }}</td>
                         <td class="border px-4 py-2">{{ $student->email}}</td>
                         <td class="border px-4 py-2">{{ $student->mobile}}</td>
+
+                        <td class="border px-4 py-2">
+                         {!! $student->satut ? "<td class = 'bg-red-50'>yes</td>" : "<td class='bg-red-300'>no</td>" !!}
+                         </td>
                         <td class="border px-4 py-2">
                             <button wire:click="edit({{ $student->id }})"
                                     class="flex px-4 py-2 bg-gray-500 text-gray-900 cursor-pointer">Edit</button>
                             <button wire:click="delete({{ $student->id }})"
                                     class="flex px-4 py-2 bg-red-100 text-gray-900 cursor-pointer">Delete</button>
+                                    <button wire:click="show({{ $student->id }})"
+                                    class="flex px-4 py-2 bg-red-500 text-gray-900 cursor-pointer">show</button>
                         </td>
                     </tr>
                 @endforeach

@@ -18,6 +18,7 @@ class CreateStudentsTable extends Migration
             $table->string('name', 100);
             $table->string('email');
             $table->string('mobile');
+            $table->boolean('satut')->default(false);
             $table->timestamps();
 
         });

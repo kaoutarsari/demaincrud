@@ -5,21 +5,74 @@ use App\Models\Student;
 
 class Crud extends Component
 {
-    public $students, $name, $email, $mobile, $student_id;
+    public $students, $name, $email, $mobile, $student_id,$satut;
     public $edit;
     public $isModalOpen = 0;
-    public $create;
+    public $create ;
     public $action;
+    public $show;
+
+
+    protected $listeners =[
+
+        'refreshlist' => '$refresh',
+
+   ];
+
+   public function mount(){
+    $this->students = Student::latest()->get();
+
+
+   }
+
+
     public function render()
     {
-        $this->students = Student::all();
         return view('livewire.crud');
+
     }
     public function create()
     {
+        $this->show = true;
+        $this->edit = true;
         $this->resetCreateForm();
         $this->openModalPopover('create');
     }
+
+
+    public function edit($id)
+    {
+
+        $this->show = true;
+        $this->edit = true;
+        $this->openModalPopover('edit');
+        $student = Student::findOrFail($id);
+        $this->student_id = $id;
+        $this->name = $student->name;
+        $this->email = $student->email;
+        $this->mobile = $student->mobile;
+        $this->satut = $student->satut;
+        $this->emit('refreshlist');  
+
+
+    }
+
+    public function show($id){
+
+
+        $this->show = false;
+        $this->edit = false;
+        $this->openModalPopover('show');
+        $student = Student::findOrFail($id);
+        $this->student_id = $id;
+        $this->name = $student->name;
+        $this->email = $student->email;
+        $this->mobile = $student->mobile;
+        $this->satut = $student->satut;
+
+    }
+
+
     public function openModalPopover($action)
     {
         $this->action = $action;
@@ -38,36 +91,49 @@ class Crud extends Component
     public function store()
     {
         $this->validate([
-            'name' => 'required',
+            'name' => 'required|unique:students|max:255',
             'email' => 'required',
             'mobile' => 'required',
+            'satut' => 'required',
         ]);
+          //dd($this->students->all());
 
         Student::updateOrCreate(['id' => $this->student_id], [
             'name' => $this->name,
             'email' => $this->email,
             'mobile' => $this->mobile,
+            'mobile' => $this->mobile,
+            'satut' => $this->satut,    
+      
         ]);
-        session()->flash('message', $this->student_id ? 'Student updated.' : 'Student created.');
+    
+
+        //session()->flash('message', $this->student_id ? 'Student updated.' : 'Student ajout avec success.');
+
+          // Set Flash Message
+              $this->dispatchBrowserEvent('alert', [
+             'type' => 'success',
+             'message' => $this->student_id ? 'Contact modifier avec success' : 'Contact ajouter avec success'
+             ]);
+
+        $this->emit('refreshlist');  
         $this->closeModalPopover();
         $this->resetCreateForm();
-    }
-    public function edit($id)
-    {
-        $this->openModalPopover('edit');
-
-        $student = Student::findOrFail($id);
-        $this->student_id = $id;
-        $this->name = $student->name;
-        $this->email = $student->email;
-        $this->mobile = $student->mobile;
-
 
     }
+  
 
     public function delete($id)
     {
         Student::find($id)->delete();
         session()->flash('message', 'Studen deleted.');
+        $this->emit('refreshlist');  
+
     }
+
+
+
+
+
+    
 }
