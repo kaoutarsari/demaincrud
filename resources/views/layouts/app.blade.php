@@ -37,8 +37,7 @@
             <!-- Page Content -->
             <main>
             {{ $slot }}
-
-<livewire:crud /> 
+            <livewire:crud /> 
 
             </main>
         </div>
